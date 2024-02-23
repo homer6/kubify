@@ -29,6 +29,11 @@ namespace kubify::apps {
                 reader.populateGraph(graph);
 
                 cout << graph.exportFullContents();
+
+                cout << endl << endl;
+                cout << ">>> directory structure <<<" << endl << endl;
+
+                cout << graph.print(contents_path);
                 
             }
 
