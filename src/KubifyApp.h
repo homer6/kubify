@@ -13,10 +13,12 @@ namespace kubify {
         public:
             std::string run() {
 
-                FileSystemDirectoryReader reader(".");
+                const string root_path = ".";
+
+                FileSystemDirectoryReader reader(root_path);
                 reader.populateGraph(graph);
 
-                return graph.print();
+                return graph.print(root_path);
             }
 
 

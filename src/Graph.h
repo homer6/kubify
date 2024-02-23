@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <sstream>
+#include <queue>
 
 #include "Node.h"
 #include "Reader.h"
@@ -35,35 +36,54 @@ namespace kubify {
                 reader->populateGraph(*this); // Delegate the population logic to the Reader
             }
 
-            std::string print() const {
+
+
+            std::string print( const std::string& rootId ) const {
 
                 std::stringstream ss;
-                std::unordered_set<std::string> edgesRecorded;
+                std::unordered_set<std::string> visited; // Tracks visited nodes to avoid duplicates
 
-                ss << "digraph G {\n"; // Start of the Graphviz graph
+                ss << "digraph G {\n";
+                ss << "  rankdir=LR;\n"; // Set graph direction from top to bottom
 
-                for (const auto& pair : nodes) {
-                    const auto& node = pair.second;
-                    // For each node, print the node identifier
-                    ss << "  \"" << node->id << "\";\n";
+                if (nodes.find(rootId) == nodes.end()) {
+                    ss << "}\n";
+                    return ss.str(); // Return an empty graph if rootId is not found
+                }
 
-                    // For each edge, print an edge line
-                    for (const auto& neighbor : node->neighbors) {
-                        std::string edge = node->id + " -> " + neighbor->id;
-                        std::string reverseEdge = neighbor->id + " -> " + node->id;
+                std::queue<std::shared_ptr<Node>> queue;
+                queue.push(nodes.at(rootId));
+                visited.insert(rootId);
 
-                        // Check if this edge or its reverse has already been recorded
-                        if (edgesRecorded.find(edge) == edgesRecorded.end() && edgesRecorded.find(reverseEdge) == edgesRecorded.end()) {
-                            ss << "  \"" << node->id << "\" -> \"" << neighbor->id << "\";\n";
-                            edgesRecorded.insert(edge);
+                while (!queue.empty()) {
+                    auto current = queue.front();
+                    queue.pop();
+
+                    // Print the current node if not printed already
+                    ss << "  \"" << current->id << "\";\n";
+
+                    for (const auto& neighbor : current->neighbors) {
+                        // Check if neighbor is already visited
+                        if (visited.find(neighbor->id) == visited.end()) {
+                            // Mark as visited
+                            visited.insert(neighbor->id);
+                            queue.push(neighbor);
+
+                            // Since this neighbor is directly connected and not visited, it's a child
+                            // Print edge from current to this child
+                            ss << "  \"" << current->id << "\" -> \"" << neighbor->id << "\";\n";
                         }
+                        // Note: No need to check for reverse edges, as we only add unvisited children
                     }
                 }
 
-                ss << "}"; // End of the Graphviz graph
+                ss << "}\n";
                 return ss.str();
-                
+
             }
+
+
+
 
     };
 
