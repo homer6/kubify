@@ -16,6 +16,8 @@ namespace kubify {
 
         public:
             string id; // Unique identifier, e.g., path or name
+            string contents; // File contents
+
             vector<shared_ptr<Node>> neighbors; // Edges to neighbors
 
             explicit Node(string id) : id(std::move(id)) {}

@@ -18,7 +18,9 @@ namespace kubify {
                 FileSystemDirectoryReader reader(root_path);
                 reader.populateGraph(graph);
 
-                return graph.print(root_path);
+                //return graph.print(root_path);
+
+                return graph.exportFullContents();
             }
 
 

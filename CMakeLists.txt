@@ -8,8 +8,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Include directories for your project
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
+# Set all of the sources
+set(SOURCES
+    src/KubifyApp.cpp
+    src/Graph.cpp
+)
+
+
 # Add main application
-add_executable(kubify src/main.cpp src/KubifyApp.cpp)
+add_executable(kubify src/main.cpp ${SOURCES})
 
 # Enable testing with CTest
 enable_testing()
@@ -21,7 +28,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 
 # Add test executable
-add_executable(test_kubify tests/TestKubifyApp.cpp src/KubifyApp.cpp)
+add_executable(test_kubify tests/TestKubifyApp.cpp ${SOURCES})
 target_link_libraries(test_kubify ${GTEST_LIBRARIES} pthread)
 
 # Add test to the project to be run with 'make test' or 'ctest'
@@ -31,7 +38,7 @@ add_test(NAME kubify_test COMMAND test_kubify)
 
 
 # Add test executable
-add_executable(test_mock_reader tests/TestMockReader.cpp src/KubifyApp.cpp)
+add_executable(test_mock_reader tests/TestMockReader.cpp ${SOURCES})
 target_link_libraries(test_mock_reader ${GTEST_LIBRARIES} pthread)
 
 # Add test to the project to be run with 'make test' or 'ctest'

@@ -11,6 +11,38 @@ using std::string;
 using std::vector;
 
 
+#include <filesystem>
+#include <fstream>
+#include <string>
+
+namespace fs = std::filesystem;
+
+static std::string read_file_contents( const std::filesystem::path& pathToFile ) {
+
+    if( fs::is_regular_file(pathToFile) ){
+
+        std::ifstream fileStream(pathToFile, std::ios::binary);
+        if (!fileStream.is_open()) {
+            throw std::runtime_error("Could not open file: " + pathToFile.string());
+        }
+
+        std::string fileContents((std::istreambuf_iterator<char>(fileStream)),
+                                std::istreambuf_iterator<char>());
+        return fileContents;
+
+    } else {
+
+        //throw std::runtime_error(pathToFile.string() + " is a directory, not a file");
+        return "is_directory";
+
+    }
+
+
+}
+
+
+
+
 namespace kubify {
 
     class FileSystemDirectoryReader : public Reader {
@@ -51,7 +83,11 @@ namespace kubify {
                     
                     // Ensure nodeId and parentId are relative to root_path if needed
 
-                    graph.addNode(nodeId);
+                    auto node = graph.addNode(nodeId);
+
+                    //read file contents into node contents
+                    node->contents = read_file_contents(nodeId);
+
                     if( nodeId != root_path ){ // Avoid linking root to itself
                         graph.addEdge(parentId, nodeId);
                     }
