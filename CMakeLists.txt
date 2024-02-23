@@ -5,20 +5,22 @@ project(kubify VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Include directories
+# Include directories for your project
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
 # Add main application
 add_executable(kubify src/main.cpp src/KubifyApp.cpp)
 
-# Google Test for unit tests
+# Enable testing with CTest
 enable_testing()
+
+# Find Google Test package (should work if GTest is installed properly)
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-# Test executable
+# Add test executable
 add_executable(test_kubify tests/TestKubifyApp.cpp src/KubifyApp.cpp)
 target_link_libraries(test_kubify ${GTEST_LIBRARIES} pthread)
 
-# Add test
+# Add test to the project to be run with 'make test' or 'ctest'
 add_test(NAME kubify_test COMMAND test_kubify)
