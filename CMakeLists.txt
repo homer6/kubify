@@ -18,9 +18,21 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
+
+
 # Add test executable
 add_executable(test_kubify tests/TestKubifyApp.cpp src/KubifyApp.cpp)
 target_link_libraries(test_kubify ${GTEST_LIBRARIES} pthread)
 
 # Add test to the project to be run with 'make test' or 'ctest'
 add_test(NAME kubify_test COMMAND test_kubify)
+
+
+
+
+# Add test executable
+add_executable(test_mock_reader tests/TestMockReader.cpp src/KubifyApp.cpp)
+target_link_libraries(test_mock_reader ${GTEST_LIBRARIES} pthread)
+
+# Add test to the project to be run with 'make test' or 'ctest'
+add_test(NAME mock_reader_test COMMAND test_mock_reader)
