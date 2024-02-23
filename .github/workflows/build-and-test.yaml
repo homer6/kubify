@@ -16,9 +16,11 @@ jobs:
     - name: Configure CMake
       run: cmake -S . -B build
 
-    - name: Build
+    - name: Build project
       run: cmake --build build --target all
+      working-directory: ${{github.workspace}}
 
-    - name: Test
+    - name: Run tests
       run: cmake --build build --target test
-      working-directory: build
+      working-directory: ${{github.workspace}}
+
