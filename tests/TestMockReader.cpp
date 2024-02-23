@@ -20,3 +20,9 @@ TEST(MockReaderTest, PopulatesGraphCorrectly) {
     ASSERT_EQ(rootChildren.size(), 2); // Assuming undirected graph implementation
     
 }
+
+
+int main(int argc, char **argv){
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

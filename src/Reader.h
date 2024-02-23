@@ -1,3 +1,5 @@
+#pragma once
+
 namespace kubify {
 
     class Graph; // Forward declaration

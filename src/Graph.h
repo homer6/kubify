@@ -1,5 +1,12 @@
+#pragma once
+
 #include <unordered_map>
+#include <unordered_set>
 #include <sstream>
+
+#include "Node.h"
+#include "Reader.h"
+
 
 namespace kubify {
 

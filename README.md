@@ -2,6 +2,14 @@
 
 Kubify is a modern c++ application designed to simplify your Kubernetes deployments.
 
+## Building
+
+```
+cmake -S . -B build
+cmake --build build --target all
+```
+
+
 ## Installation
 
 To install Kubify on Ubuntu, follow these steps:

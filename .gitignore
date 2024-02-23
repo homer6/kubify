@@ -5,6 +5,8 @@ CMakeFiles/
 cmake_install.cmake
 Makefile
 
+.vscode/
+
 # CMake specific files that may be generated
 *.cmake
 
