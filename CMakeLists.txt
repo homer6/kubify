@@ -25,11 +25,16 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
+# Find the fmt library
+find_package(fmt REQUIRED)
+target_link_libraries(kubify fmt::fmt)
+
 
 
 # Add test executable
 add_executable(test_kubify tests/TestKubifyApp.cpp ${SOURCES})
-target_link_libraries(test_kubify ${GTEST_LIBRARIES} pthread)
+target_link_libraries(test_kubify ${GTEST_LIBRARIES} pthread fmt::fmt)
+
 
 # Add test to the project to be run with 'make test' or 'ctest'
 add_test(NAME kubify_test COMMAND test_kubify)
@@ -39,7 +44,7 @@ add_test(NAME kubify_test COMMAND test_kubify)
 
 # Add test executable
 add_executable(test_mock_reader tests/TestMockReader.cpp ${SOURCES})
-target_link_libraries(test_mock_reader ${GTEST_LIBRARIES} pthread)
+target_link_libraries(test_mock_reader ${GTEST_LIBRARIES} pthread fmt::fmt)
 
 # Add test to the project to be run with 'make test' or 'ctest'
 add_test(NAME mock_reader_test COMMAND test_mock_reader)

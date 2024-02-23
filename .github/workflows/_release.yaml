@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up C++ Environment
-      run: sudo apt-get update && sudo apt-get install -y cmake g++ make libgtest-dev
+      run: sudo apt-get update && sudo apt-get install -y cmake g++ make libgtest-dev libspdlog-dev
 
     - name: Build Project
       run: |

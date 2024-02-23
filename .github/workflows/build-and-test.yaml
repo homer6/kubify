@@ -11,7 +11,7 @@ jobs:
       name: Checkout code
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y cmake g++ make libgtest-dev
+      run: sudo apt-get update && sudo apt-get install -y cmake g++ make libgtest-dev libspdlog-dev
 
     - name: Configure CMake
       run: cmake -S . -B build
