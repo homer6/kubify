@@ -1,4 +1,4 @@
-#include "src/KubifyApp.h"
+#include "KubifyApp.h"
 #include <gtest/gtest.h>
 
 TEST(KubifyAppTest, RunMethod) {
