@@ -19,13 +19,13 @@ namespace kubify::apps {
 
         public:
 
-            void generateContents( const string& contents_path ){
+            void generateContents( const string& contents_path, const vector<string>& ignore_paths ){
 
                 spdlog::info( "Generating contents for path: {}", contents_path );
 
                 Graph graph;
 
-                FileSystemDirectoryReader reader(contents_path);
+                FileSystemDirectoryReader reader(contents_path, ignore_paths);
                 reader.populateGraph(graph);
 
                 cout << graph.exportFullContents();
@@ -39,13 +39,13 @@ namespace kubify::apps {
 
 
 
-            void printGraph( const string& contents_path ){
+            void printGraph( const string& contents_path, const vector<string>& ignore_paths ){
 
                 spdlog::info( "Printing graph for path: {}", contents_path );
 
                 Graph graph;
 
-                FileSystemDirectoryReader reader(contents_path);
+                FileSystemDirectoryReader reader(contents_path, ignore_paths);
                 reader.populateGraph(graph);
 
                 cout << graph.print(contents_path);

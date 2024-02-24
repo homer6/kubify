@@ -49,8 +49,8 @@ namespace kubify {
 
         public:
 
-            FileSystemDirectoryReader(const string& root_path)
-                :root_path(root_path)
+            FileSystemDirectoryReader(const string& root_path, const vector<string>& ignore_paths )
+                :root_path(root_path), ignore_paths(ignore_paths)
             {
 
             } 
@@ -60,18 +60,20 @@ namespace kubify {
                 addDirectory(graph, this->root_path);
             }
 
-
-
             const string root_path;
+            const vector<string> ignore_paths;
+
 
         private:
 
             void addDirectory( Graph& graph, const std::string& path ){
 
                 // ignore common paths (eg. .git, .vscode, CMakeFiles, etc.)
-                vector<string> ignore = {".git", ".vscode", "CMakeFiles"};
-                for (auto i : ignore){
-                    if (path.find(i) != std::string::npos){
+                //cout << "path: " << path << endl;
+
+                for (auto ignored_path : this->ignore_paths){
+                    //cout << "ignored_path: " << ignored_path << endl;                   
+                    if( path.find(ignored_path) != std::string::npos ){
                         return;
                     }
                 }

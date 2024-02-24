@@ -52,23 +52,35 @@ int main(int argc, char **argv) {
 
     // Contents command
         CLI::App *contents_app = app.add_subcommand("contents", "Manage the project's contents.");
-        std::string contents_path = "."; // Default path is the current directory
+        string contents_path = "."; // Default path is the current directory
+        const vector<string> default_ignore_paths = {".git", ".vscode", "CMakeFiles"};
+        vector<string> ignore_paths;
+
 
         // Generate prompt command
         CLI::App *contents_prompt_app = contents_app->add_subcommand("prompt", "Generate a prompt from the project's contents (stdout).");
         contents_prompt_app->add_option("path", contents_path, "The path to list contents for. Defaults to the current directory.")
                             ->default_val(contents_path);
+        contents_prompt_app->add_option("--ignore", ignore_paths, "Paths to ignore. Can specify multiple times.")
+                            ->expected(-1); // Allows multiple instances
+
+
 
         // Generate project's graph command
         CLI::App *contents_graph_app = contents_app->add_subcommand("graph", "Generate a graphviz document from the project's contents (stdout).");
         contents_graph_app->add_option("path", contents_path, "The path to list contents for. Defaults to the current directory.")
                             ->default_val(contents_path);
-
+        contents_graph_app->add_option("--ignore", ignore_paths, "Paths to ignore. Can specify multiple times.")
+                        ->expected(-1); // Allows multiple instances
 
 
     // parse the command line arguments
 
         CLI11_PARSE(app, argc, argv);
+
+
+        ignore_paths.insert( ignore_paths.end(), default_ignore_paths.begin(), default_ignore_paths.end() );
+
 
         // cluster command
 
@@ -90,9 +102,18 @@ int main(int argc, char **argv) {
         // contents command
 
             else if (*contents_prompt_app) {
-                kubify_app.contents_app.generateContents(contents_path);
+
+                for( const string& ignore_path : ignore_paths ){
+                    std::cout << "Ignoring: " << ignore_path << std::endl;
+                }
+                kubify_app.contents_app.generateContents(contents_path, ignore_paths);
+
             }else if( *contents_graph_app ){
-                kubify_app.contents_app.printGraph(contents_path);
+
+                for( const string& ignore_path : ignore_paths ){
+                    std::cout << "Ignoring: " << ignore_path << std::endl;
+                }
+                kubify_app.contents_app.printGraph(contents_path, ignore_paths);
             }
 
     return 0;

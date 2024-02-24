@@ -9,6 +9,14 @@ cmake -S . -B build
 cmake --build build --target all
 ```
 
+## Running
+
+```
+./build/kubify contents prompt --ignore src/CLI /docs /tests /build -- . > contents.txt
+
+./build/kubify contents graph --ignore src/CLI /docs /tests /build -- . > project.gv
+```
+
 
 ## Installation
 
