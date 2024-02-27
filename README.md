@@ -1,6 +1,6 @@
 # Kubify
 
-Kubify is a modern c++ application designed to simplify your Kubernetes deployments.
+Kubify accelerates your workloads into Kubernetes.
 
 ## Building
 
