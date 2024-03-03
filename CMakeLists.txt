@@ -57,3 +57,7 @@ target_link_libraries(kubify fmt::fmt kubepp_lib::kubepp_lib)
 
 # Add test to the project to be run with 'make test' or 'ctest'
 #add_test(NAME mock_reader_test COMMAND test_mock_reader)
+
+
+
+install(TARGETS kubify DESTINATION bin)
