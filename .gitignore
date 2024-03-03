@@ -58,3 +58,6 @@ lib/
 
 # Test executables
 test_kubify
+
+
+/kubify

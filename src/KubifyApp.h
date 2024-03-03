@@ -9,6 +9,7 @@ using std::string;
 
 #include "apps/ClusterApp.h"
 #include "apps/ContentsApp.h"
+#include "apps/KubernetesApp.h"
 
 
 namespace kubify {
@@ -18,6 +19,7 @@ namespace kubify {
         public:
             apps::ClusterApp cluster_app;
             apps::ContentsApp contents_app;
+            apps::KubernetesApp kubernetes_app;
             
     };
 

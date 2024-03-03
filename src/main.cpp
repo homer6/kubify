@@ -74,6 +74,14 @@ int main(int argc, char **argv) {
                         ->expected(-1); // Allows multiple instances
 
 
+
+        // Kubernetes command
+        CLI::App *kubernetes_app = app.add_subcommand("k8s", "Manage Kubernetes resources.");
+        CLI::App *kubernetes_export_app = kubernetes_app->add_subcommand("export", "Export Kubernetes resources to a file.");
+        CLI::App *kubernetes_export_kinds_app = kubernetes_export_app->add_subcommand("kinds", "Export all Kubernetes resources types (kinds) to stdout.");
+        CLI::App *kubernetes_export_resources_app = kubernetes_export_app->add_subcommand("resources", "Export all Kubernetes resources to stdout.");
+
+
     // parse the command line arguments
 
         CLI11_PARSE(app, argc, argv);
@@ -114,6 +122,14 @@ int main(int argc, char **argv) {
                     std::cout << "Ignoring: " << ignore_path << std::endl;
                 }
                 kubify_app.contents_app.printGraph(contents_path, ignore_paths);
+            }
+
+        // k8s command
+
+            else if( *kubernetes_export_kinds_app ){
+                kubify_app.kubernetes_app.test();
+            }else if( *kubernetes_export_resources_app ){
+                //kubify_app.kubernetes_app.exportResources();
             }
 
     return 0;
