@@ -11,7 +11,7 @@ Kubify accelerates your software into Kubernetes.
 - Quickly install other cluster needs, such as observability.
 - Quickly backup, restore, query, or modify any Kubernetes cluster.
 - Kubify creates and manages opinionated Kubernetes clusters, offering complete and opinionated developer workflow management, to deliver on the promises of cloud native.
-- Kubify tries to use stable CNCF projects as components, wherever possible.
+- Kubify tries to use stable [CNCF projects](https://landscape.cncf.io/) as components, wherever possible.
 
 
 ## Examples
