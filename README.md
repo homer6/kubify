@@ -2,19 +2,25 @@
 
 Kubify accelerates your workloads into Kubernetes.
 
-## Building
+## Build and Install
 
 ```
-cmake -S . -B build
-cmake --build build --target all
+cmake .
+make -j4
+sudo make install
+sudo ldconfig
 ```
 
 ## Running
 
 ```
-./build/kubify contents prompt --ignore src/CLI /docs /tests /build -- . > contents.txt
+kubify contents prompt --ignore src/CLI /docs /tests /build -- . > contents.txt
 
-./build/kubify contents graph --ignore src/CLI /docs /tests /build -- . > project.gv
+kubify contents graph --ignore src/CLI /docs /tests /build -- . > project.gv
+
+kubify k8s export kinds > all_kinds.json
+
+kubify k8s export resources > all_resources.json
 ```
 
 

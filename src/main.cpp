@@ -127,9 +127,9 @@ int main(int argc, char **argv) {
         // k8s command
 
             else if( *kubernetes_export_kinds_app ){
-                kubify_app.kubernetes_app.test();
+                kubify_app.kubernetes_app.exportKinds();
             }else if( *kubernetes_export_resources_app ){
-                //kubify_app.kubernetes_app.exportResources();
+                kubify_app.kubernetes_app.exportResources();
             }
 
     return 0;
