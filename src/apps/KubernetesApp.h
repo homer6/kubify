@@ -8,6 +8,8 @@ using std::string;
 using std::cout;
 using std::endl;
 
+#include <sstream>
+
 #include "FileSystemDirectoryReader.h"
 #include "Graph.h"
 
@@ -39,10 +41,49 @@ namespace kubify::apps {
 
             void exportResources(){
 
+
+               
                 KubernetesClient kube_client;
 
                 json all_resources = kube_client.runQuery( "SELECT * FROM *" );
-                cout << all_resources.dump(4) << endl;
+                json all_json_ptr_resources = all_resources.flatten();
+
+
+                // filter out some fields
+
+                    const vector<string> ignore_fields = { 
+                        "metadata/managedFields", 
+                        "metadata/resourceVersion",
+                        "metadata/uid",
+                        "/status/"
+                    };
+                
+
+                json results = json::object();
+
+                for( const auto& [key, value] : all_json_ptr_resources.items() ){
+
+                    bool filter = false;
+
+                    for( const string& ignore_field : ignore_fields ){
+
+                        if( key.find(ignore_field) != string::npos ){
+                            filter = true;
+                            break;
+                        }
+
+                    }
+
+                    if( !filter ){
+                        results[key] = value;
+                    }
+
+                }
+
+
+                // unflatten and pretty print the filtered json
+
+                    cout << results.unflatten().dump(4) << endl;
                 
             }
 
