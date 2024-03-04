@@ -39,52 +39,61 @@ namespace kubify::apps {
             }
 
 
-            void exportResources(){
+            void exportResources( string kubepp_sql_query, bool flatten, bool ignore_common_fields ){
 
-
-               
+              
                 KubernetesClient kube_client;
 
-                json all_resources = kube_client.runQuery( "SELECT * FROM *" );
+                json all_resources = kube_client.runQuery( kubepp_sql_query );
                 json all_json_ptr_resources = all_resources.flatten();
+                json results = all_json_ptr_resources;
+
+                if( ignore_common_fields ){
+
+                    // filter out some fields
 
 
-                // filter out some fields
+                        const vector<string> ignore_fields = { 
+                            "metadata/managedFields", 
+                            "metadata/resourceVersion",
+                            "metadata/uid",
+                            "/status/"
+                        };
+                    
 
-                    const vector<string> ignore_fields = { 
-                        "metadata/managedFields", 
-                        "metadata/resourceVersion",
-                        "metadata/uid",
-                        "/status/"
-                    };
-                
+                    results = json::object();
 
-                json results = json::object();
+                    for( const auto& [key, value] : all_json_ptr_resources.items() ){
 
-                for( const auto& [key, value] : all_json_ptr_resources.items() ){
+                        bool filter = false;
 
-                    bool filter = false;
+                        for( const string& ignore_field : ignore_fields ){
 
-                    for( const string& ignore_field : ignore_fields ){
+                            if( key.find(ignore_field) != string::npos ){
+                                filter = true;
+                                break;
+                            }
 
-                        if( key.find(ignore_field) != string::npos ){
-                            filter = true;
-                            break;
                         }
 
-                    }
+                        if( !filter ){
+                            results[key] = value;
+                        }
 
-                    if( !filter ){
-                        results[key] = value;
                     }
 
                 }
 
 
+
                 // unflatten and pretty print the filtered json
 
-                    cout << results.unflatten().dump(4) << endl;
-                
+                    if( flatten ){
+                        cout << results.dump(4) << endl;
+                    }else{
+                        cout << results.unflatten().dump(4) << endl;
+                    }
+
             }
 
 
