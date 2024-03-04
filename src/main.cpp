@@ -76,18 +76,21 @@ int main(int argc, char **argv) {
 
 
         // Kubernetes command
+        string kubepp_sql_query;
+
         CLI::App *kubernetes_app = app.add_subcommand("k8s", "Manage Kubernetes resources.");
         CLI::App *kubernetes_export_app = kubernetes_app->add_subcommand("export", "Export Kubernetes resources to a file.");
-        CLI::App *kubernetes_export_kinds_app = kubernetes_export_app->add_subcommand("kinds", "Export all Kubernetes resources types (kinds) to stdout.");
-        CLI::App *kubernetes_export_resources_app = kubernetes_export_app->add_subcommand("resources", "Export all Kubernetes resources to stdout.");
-        
-        kubernetes_export_resources_app->add_flag("--flatten", "Flatten the resources to JSON Pointers.");
 
-        string kubepp_sql_query;
-        kubernetes_export_resources_app->add_option("--query", kubepp_sql_query, "Apply a kubepp-sql query to the resources.")
+        CLI::App *kubernetes_export_kinds_app = kubernetes_export_app->add_subcommand("kinds", "Export all Kubernetes resource types (kinds) to stdout.");
+            kubernetes_export_kinds_app->add_flag("--flatten", "Flatten the kinds to JSON Pointers.");
+            kubernetes_export_kinds_app->add_option("--query", kubepp_sql_query, "Apply a kubepp-sql query to the kinds.")
                                         ->default_val("SELECT * FROM *");
 
-        kubernetes_export_resources_app->add_flag("--ignore-common-fields", "Ignore common fields like metadata/uid, metadata/resourceVersion, metadata/managedFields, and status fields.");
+        CLI::App *kubernetes_export_resources_app = kubernetes_export_app->add_subcommand("resources", "Export all Kubernetes resources to stdout.");
+            kubernetes_export_resources_app->add_flag("--flatten", "Flatten the resources to JSON Pointers.");
+            kubernetes_export_resources_app->add_option("--query", kubepp_sql_query, "Apply a kubepp-sql query to the resources.")
+                                        ->default_val("SELECT * FROM *");
+            kubernetes_export_resources_app->add_flag("--ignore-common-fields", "Ignore common fields like metadata/uid, metadata/resourceVersion, metadata/managedFields, and status fields.");
 
 
 
@@ -136,11 +139,11 @@ int main(int argc, char **argv) {
         // k8s command
 
             else if( *kubernetes_export_kinds_app ){
-                kubify_app.kubernetes_app.exportKinds();
+                bool flatten = kubernetes_export_kinds_app->count("--flatten");                
+                kubify_app.kubernetes_app.exportKinds( kubepp_sql_query, flatten );
             }else if( *kubernetes_export_resources_app ){
                 bool flatten = kubernetes_export_resources_app->count("--flatten");
                 bool ignore_common_fields = kubernetes_export_resources_app->count("--ignore-common-fields");
-
                 kubify_app.kubernetes_app.exportResources( kubepp_sql_query, flatten, ignore_common_fields );
             }
 

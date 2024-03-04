@@ -29,12 +29,19 @@ namespace kubify::apps {
 
         public:
 
-            void exportKinds(){
+            void exportKinds( string kubepp_sql_query, bool flatten ){
 
                 KubernetesClient kube_client;
 
                 json all_kinds = kube_client.getApiResources();
-                cout << all_kinds.dump(4) << endl;
+                json all_json_ptr_kinds = all_kinds.flatten();
+
+                // unflatten and pretty print the json
+                    if( flatten ){
+                        cout << all_json_ptr_kinds.dump(4) << endl;
+                    }else{
+                        cout << all_json_ptr_kinds.unflatten().dump(4) << endl;
+                    }
                 
             }
 
