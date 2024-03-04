@@ -28,6 +28,12 @@ kubify k8s export kinds > all_kinds.json
 
 # Export all resources from a Kubernetes cluster for backup or analysis
 kubify k8s export resources > all_resources.json
+
+# Kubepp-sql queries with the ability to flatten to JSON Pointer or ignore common fields
+kubify k8s export resources --query "SELECT * FROM Pod" --ignore-common-fields > filtered_pods.json
+kubify k8s export resources --query "SELECT * FROM Deployment,DaemonSet,StatefulSet" > workloads.json
+kubify k8s export resources --query "SELECT * FROM Pod,Job" --flatten > unfiltered_pods_flattened.json
+
 ```
 
 
