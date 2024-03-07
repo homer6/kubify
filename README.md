@@ -68,4 +68,4 @@ sudo ldconfig
 
 ## Support
 
-Kubify offers [professional support and services](https://calendly.com/steve-sperandeo), upon request. I'm also happy to help via github issues, whenever possible.
+Kubify offers [professional support and services](https://kubify.ai), upon request. I'm also happy to help via github issues, whenever possible.
