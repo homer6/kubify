@@ -60,6 +60,7 @@ https://github.com/homer6/kubepp
 ## Build and Install
 
 ```bash
+sudo apt-get install libgtest-dev
 cmake .
 make -j4
 sudo make install
