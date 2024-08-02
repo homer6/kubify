@@ -14,7 +14,6 @@ include_directories(
     "/usr/local/include/kubernetes/api"
 )
 
-
 # Set all of the sources
 set(SOURCES
     src/KubifyApp.cpp
@@ -23,9 +22,23 @@ set(SOURCES
 
 find_package(kubepp_lib REQUIRED)
 
-
 # Add main application
 add_executable(kubify src/main.cpp ${SOURCES})
+
+# Set RPATH to find the dynamic libraries
+if(APPLE)
+    set_target_properties(kubify PROPERTIES
+        INSTALL_RPATH_USE_LINK_PATH TRUE
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "/usr/local/lib"
+    )
+elseif(UNIX)
+    set_target_properties(kubify PROPERTIES
+        INSTALL_RPATH_USE_LINK_PATH TRUE
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "/usr/local/lib"
+    )
+endif()
 
 # Enable testing with CTest
 enable_testing()
@@ -38,26 +51,18 @@ include_directories(${GTEST_INCLUDE_DIRS})
 find_package(fmt REQUIRED)
 target_link_libraries(kubify fmt::fmt kubepp_lib::kubepp_lib)
 
-
-
 # Add test executable
-#add_executable(test_kubify tests/TestKubifyApp.cpp ${SOURCES})
-#target_link_libraries(test_kubify ${GTEST_LIBRARIES} pthread fmt::fmt)
-
+# add_executable(test_kubify tests/TestKubifyApp.cpp ${SOURCES})
+# target_link_libraries(test_kubify ${GTEST_LIBRARIES} pthread fmt::fmt)
 
 # Add test to the project to be run with 'make test' or 'ctest'
-#add_test(NAME kubify_test COMMAND test_kubify)
-
-
-
+# add_test(NAME kubify_test COMMAND test_kubify)
 
 # Add test executable
-#add_executable(test_mock_reader tests/TestMockReader.cpp ${SOURCES})
-#target_link_libraries(test_mock_reader ${GTEST_LIBRARIES} pthread fmt::fmt)
+# add_executable(test_mock_reader tests/TestMockReader.cpp ${SOURCES})
+# target_link_libraries(test_mock_reader ${GTEST_LIBRARIES} pthread fmt::fmt)
 
 # Add test to the project to be run with 'make test' or 'ctest'
-#add_test(NAME mock_reader_test COMMAND test_mock_reader)
-
-
+# add_test(NAME mock_reader_test COMMAND test_mock_reader)
 
 install(TARGETS kubify DESTINATION bin)

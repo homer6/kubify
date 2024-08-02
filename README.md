@@ -57,15 +57,25 @@ kubify k8s export resources --query "SELECT * FROM Pod,Job" --flatten > unfilter
 https://github.com/homer6/kubepp
 
 
-## Build and Install
+## Build and Install (Ubuntu)
 
 ```bash
 sudo apt-get install libgtest-dev
 cmake .
-make -j4
+make -j8
 sudo make install
 sudo ldconfig
 ```
+
+## Build and Install (MacOS)
+
+```bash
+brew install googletest
+cmake .
+make -j8
+sudo make install
+```
+
 
 ## Support
 
