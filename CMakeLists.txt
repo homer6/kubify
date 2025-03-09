@@ -47,9 +47,13 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
+find_package(spdlog REQUIRED)
+
+
 # Find the fmt library
+add_definitions(-DSPDLOG_FMT_EXTERNAL)
 find_package(fmt REQUIRED)
-target_link_libraries(kubify fmt::fmt kubepp_lib::kubepp_lib)
+target_link_libraries(kubify kubepp_lib::kubepp_lib spdlog::spdlog)
 
 # Add test executable
 # add_executable(test_kubify tests/TestKubifyApp.cpp ${SOURCES})
