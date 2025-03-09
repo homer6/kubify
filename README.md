@@ -37,6 +37,19 @@ kubify k8s export resources --query "SELECT * FROM Pod,Job" --flatten > unfilter
 ```
 
 
+## Install
+
+Install [spack](https://spack-tutorial.readthedocs.io/en/latest/tutorial_basics.html)
+
+```bash
+spack repo add https://github.com/homer6/spack-repo/spack
+spack install kubify
+spack load kubify
+ln -s $(which gke-gcloud-auth-plugin) ~/.kube/gke-gcloud-auth-plugin
+kubify --help
+```
+
+
 ## Requirements
 
 - An AWS account with CLI credentials
